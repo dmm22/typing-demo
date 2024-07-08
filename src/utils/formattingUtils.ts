@@ -4,3 +4,13 @@ export const formatSecondsAsMMSS = (totalSeconds: number): string => {
 
   return `${String(minutes).padStart(2, "0")}:${String(seconds).padStart(2, "0")}`
 }
+
+export const formatSecondsAsFullWords = (duration: number) => {
+  const minutes = Math.floor(duration / 60)
+  const seconds = duration % 60
+
+  const minuteString = minutes === 1 ? "1 Minute" : minutes > 1 ? `${minutes} Minutes` : ""
+  const secondString = seconds === 1 ? "1 Second" : seconds > 1 ? `${seconds} Seconds` : ""
+
+  return `${minuteString}${minuteString && secondString ? " " : ""}${secondString}`.trim()
+}

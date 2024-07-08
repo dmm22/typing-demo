@@ -6,3 +6,8 @@ export type Keystroke = {
   keyIndex: number
   timeElapsed: number
 }
+
+export type CarouselOption = {
+  value: string | number
+  label: string
+}

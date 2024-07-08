@@ -3,6 +3,7 @@ import { useCallback, useContext } from "react"
 import HiddenInput from "./components/HiddenInput"
 import TestTimer from "./components/TestTimer"
 import TextDisplay from "./components/TextDisplay"
+import TestDurationPicker from "./components/TestDurationPicker"
 
 import { TestManagerContext } from "../../context/TestManagerContext"
 
@@ -42,6 +43,7 @@ export default function TestPage() {
         handleSetHiddenInputValue={handleSetHiddenInputValue}
         recordKeystroke={recordKeystroke}
       />
+      <TestDurationPicker />
       <TestTimer />
       <TextDisplay
         targetText={targetText}
