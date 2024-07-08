@@ -1,7 +1,8 @@
-import useTimer from "../../../hooks/useTimer"
+import { useContext } from "react"
 import { formatSecondsAsMMSS } from "../../../utils/formattingUtils"
+import { TestManagerContext } from "../../../context/TestManagerContext"
 
 export default function TestTimer() {
-  const { timer, timerStage, startTimer, stopTimer, resetTimer } = useTimer({ duration: 15 })
+  const { timer } = useContext(TestManagerContext)
   return <time className="text-5xl font-medium text-center">{formatSecondsAsMMSS(timer)}</time>
 }
