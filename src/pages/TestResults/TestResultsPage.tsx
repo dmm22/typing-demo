@@ -1,11 +1,9 @@
-import { useContext } from "react"
-import { TestManagerContext } from "../../context/TestManagerContext"
+import ResultChart from "./components/ResultChart"
 
 export default function TestResultsPage() {
-  const { testResults } = useContext(TestManagerContext)
   return (
     <main>
-      <pre>{testResults && JSON.stringify(testResults, null, 2)}</pre>
+      <ResultChart />
     </main>
   )
 }

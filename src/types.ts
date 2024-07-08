@@ -19,3 +19,9 @@ export type TestResult = {
   wpm: number
   accuracy: number
 }
+
+export type TestChartData = {
+  wpm: number[]
+  accuracy: number[]
+  errors: string[]
+}

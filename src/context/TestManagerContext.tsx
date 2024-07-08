@@ -4,7 +4,8 @@ import { useNavigate } from "react-router-dom"
 import useTimer from "../hooks/useTimer"
 import useTestResults from "../pages/TestResults/hooks/useTestResults"
 
-import { Keystroke, TestResult, TimerStage } from "../types"
+import { Keystroke, TestChartData, TestResult, TimerStage } from "../types"
+import useTestChartStats from "../pages/TestResults/hooks/useTestChartStats"
 
 type TestManagerContextProps = {
   timer: number
@@ -15,6 +16,7 @@ type TestManagerContextProps = {
   setTestDuration: Dispatch<SetStateAction<number>>
   testResults: TestResult | null
   finalizeTest: (keystrokes: Keystroke[]) => void
+  testChartData: TestChartData | null
 }
 
 export const TestManagerContext = createContext<TestManagerContextProps>({} as TestManagerContextProps)
@@ -25,11 +27,13 @@ export default function TestManagerContextProvider({ children }: { children: Rea
   const navigate = useNavigate()
   const { timer, timerStage, startTimer, stopTimer, resetTimer } = useTimer({ duration: testDuration })
   const { testResults, processTestResults } = useTestResults()
+  const { testChartData, getTestChartData } = useTestChartStats()
 
   const finalizeTest = useCallback(
     (keystrokes: Keystroke[]) => {
       processTestResults(keystrokes, testDuration)
 
+      getTestChartData({ keystrokes, testDuration })
       resetTimer()
       navigate("/results")
     },
@@ -46,7 +50,8 @@ export default function TestManagerContextProvider({ children }: { children: Rea
         testDuration,
         setTestDuration,
         testResults,
-        finalizeTest
+        finalizeTest,
+        testChartData
       }}
     >
       {children}
