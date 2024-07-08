@@ -4,6 +4,7 @@ import HiddenInput from "./components/HiddenInput"
 import TestTimer from "./components/TestTimer"
 import TextDisplay from "./components/TextDisplay"
 import TestDurationPicker from "./components/TestDurationPicker"
+import TextTypePicker from "./components/TextTypePicker"
 
 import { TestManagerContext } from "../../context/TestManagerContext"
 
@@ -36,20 +37,33 @@ export default function TestPage() {
   }, [targetText])
 
   return (
-    <main>
+    <>
       <HiddenInput
         targetText={targetText}
         hiddenInputValue={hiddenInputValue}
         handleSetHiddenInputValue={handleSetHiddenInputValue}
         recordKeystroke={recordKeystroke}
       />
-      <TestDurationPicker />
-      <TestTimer />
-      <TextDisplay
-        targetText={targetText}
-        hiddenInputValue={hiddenInputValue}
-        missedSpaceIndex={missedSpaceIndex}
-      />
-    </main>
+      <main className="absolute inset-0 flex items-center justify-center">
+        <div className="grid items-center grid-rows-3">
+          <section className="flex justify-center">
+            {timerStage === "running" && <TestTimer />}
+            {timerStage === "stopped" && (
+              <menu className="flex gap-14 ">
+                <TestDurationPicker />
+                <TextTypePicker updateTextArray={updateTextArray} />
+              </menu>
+            )}
+          </section>
+          <section className="my-14">
+            <TextDisplay
+              targetText={targetText}
+              hiddenInputValue={hiddenInputValue}
+              missedSpaceIndex={missedSpaceIndex}
+            />
+          </section>
+        </div>
+      </main>
+    </>
   )
 }
