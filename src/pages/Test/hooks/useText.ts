@@ -1,6 +1,7 @@
+import { useCallback, useMemo, useState } from "react"
+
 import { shuffleArray } from "../../../utils/arrayUtils"
 import sentences from "../../../data/sentences.json"
-import { useCallback, useMemo, useState } from "react"
 
 const useText = (initialTextArray?: string[]) => {
   const [textArray, setTextArray] = useState(() => shuffleArray(initialTextArray || sentences))
