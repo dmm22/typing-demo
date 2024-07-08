@@ -1,5 +1,7 @@
 import { useRef } from "react"
 
+import Caret from "./Caret"
+
 type TextDisplayProps = {
   targetText: string
   hiddenInputValue: string
@@ -40,6 +42,7 @@ export default function TextDisplay({ targetText, hiddenInputValue, missedSpaceI
 
   return (
     <>
+      <Caret caretPositionRef={caretPositionRef} hiddenInputValue={hiddenInputValue} />
       <div className="flex flex-wrap gap-3 font-mono text-2xl ">
         {targetTextByWordAndChar.map((word, wordIndex) => (
           <div key={wordIndex} className={`${wordIndex}`}>
