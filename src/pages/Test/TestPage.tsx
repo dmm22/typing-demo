@@ -1,4 +1,5 @@
 import HiddenInput from "./components/HiddenInput"
+import TestTimer from "./components/TestTimer"
 import TextDisplay from "./components/TextDisplay"
 import useHiddenInput from "./hooks/useHiddenInput"
 import useText from "./hooks/useText"
@@ -17,6 +18,7 @@ export default function TestPage() {
         hiddenInputValue={hiddenInputValue}
         handleSetHiddenInputValue={handleSetHiddenInputValue}
       />
+      <TestTimer />
       <TextDisplay
         targetText={targetText}
         hiddenInputValue={hiddenInputValue}
