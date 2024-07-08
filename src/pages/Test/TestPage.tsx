@@ -1,4 +1,5 @@
 import HiddenInput from "./components/HiddenInput"
+import TextDisplay from "./components/TextDisplay"
 import useHiddenInput from "./hooks/useHiddenInput"
 import useText from "./hooks/useText"
 
@@ -16,8 +17,11 @@ export default function TestPage() {
         hiddenInputValue={hiddenInputValue}
         handleSetHiddenInputValue={handleSetHiddenInputValue}
       />
-      <p>{hiddenInputValue}</p>
-      <p>{targetText}</p>
+      <TextDisplay
+        targetText={targetText}
+        hiddenInputValue={hiddenInputValue}
+        missedSpaceIndex={missedSpaceIndex}
+      />
     </main>
   )
 }
