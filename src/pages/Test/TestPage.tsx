@@ -1,3 +1,4 @@
+import HiddenInput from "./components/HiddenInput"
 import useHiddenInput from "./hooks/useHiddenInput"
 import useText from "./hooks/useText"
 
@@ -11,7 +12,11 @@ export default function TestPage() {
 
   return (
     <main>
-      <input value={hiddenInputValue} onChange={e => handleSetHiddenInputValue(e.target.value)} />
+      <HiddenInput
+        hiddenInputValue={hiddenInputValue}
+        handleSetHiddenInputValue={handleSetHiddenInputValue}
+      />
+      <p>{hiddenInputValue}</p>
       <p>{targetText}</p>
     </main>
   )
