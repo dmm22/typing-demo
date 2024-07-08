@@ -11,3 +11,11 @@ export type CarouselOption = {
   value: string | number
   label: string
 }
+
+export type TestResult = {
+  testDuration: number
+  totalKeystrokes: number
+  correctKeystrokes: number
+  wpm: number
+  accuracy: number
+}

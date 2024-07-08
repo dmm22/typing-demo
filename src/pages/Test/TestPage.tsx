@@ -1,4 +1,4 @@
-import { useCallback, useContext } from "react"
+import { useCallback, useContext, useEffect } from "react"
 
 import HiddenInput from "./components/HiddenInput"
 import TestTimer from "./components/TestTimer"
@@ -17,7 +17,16 @@ export default function TestPage() {
   const { hiddenInputValue, missedSpaceIndex, setHiddenInputValue } = useHiddenInput()
   const { keystrokes, recordKeystroke, resetKeystrokes } = useKeystrokes()
 
-  const { timerStage, startTimer } = useContext(TestManagerContext)
+  const { timerStage, startTimer, finalizeTest } = useContext(TestManagerContext)
+
+  useEffect(() => {
+    if (timerStage === "complete") {
+      resetKeystrokes()
+      setHiddenInputValue("")
+      updateTargetText()
+      finalizeTest(keystrokes)
+    }
+  }, [timerStage])
 
   const handleSetHiddenInputValue = (currentInput: string) => {
     if (keystrokes.length === 1 && timerStage === "stopped") startTimer()
