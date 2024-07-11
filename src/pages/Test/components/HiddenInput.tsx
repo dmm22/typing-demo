@@ -26,6 +26,7 @@ export default function HiddenInput({
   useEventListener("keydown", focusInput)
 
   function focusInput() {
+    if (document.activeElement?.id === "newTestButton") return
     const inputOutOfFocus = document.activeElement !== inputRef.current
 
     if (inputOutOfFocus) inputRef.current?.focus()

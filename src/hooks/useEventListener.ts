@@ -1,20 +1,25 @@
 import { useEffect, useRef } from "react"
 
-type EventHandler = (event: Event) => void
+type EventHandler<TEvent extends Event> = (event: TEvent) => void
 
-const useEventListener = (eventType: string, callback: EventHandler, element: EventTarget = window) => {
-  const callbackRef = useRef(callback)
+const useEventListener = <TEvent extends Event>(
+  eventType: keyof WindowEventMap,
+  callback: EventHandler<TEvent>,
+  element: Window = window
+) => {
+  const callbackRef = useRef<EventHandler<TEvent>>(callback)
 
   useEffect(() => {
     callbackRef.current = callback
   }, [callback])
 
   useEffect(() => {
-    if (!element) return
+    const handler = (event: Event) => callbackRef.current(event as TEvent)
 
-    const handler: EventHandler = event => callbackRef.current(event)
-    element.addEventListener(eventType, handler)
-    return () => element.removeEventListener(eventType, handler)
+    element.addEventListener(eventType as keyof WindowEventMap, handler as EventListener)
+    return () => {
+      element.removeEventListener(eventType as keyof WindowEventMap, handler as EventListener)
+    }
   }, [eventType, element])
 }
 
