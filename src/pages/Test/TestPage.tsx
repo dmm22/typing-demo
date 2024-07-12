@@ -1,4 +1,4 @@
-import { useCallback, useContext, useEffect } from "react"
+import { useCallback, useContext, useEffect, useMemo } from "react"
 
 import HiddenInput from "./components/HiddenInput"
 import TestTimer from "./components/TestTimer"
@@ -14,7 +14,7 @@ import useKeystrokes from "./hooks/useKeystrokes"
 
 export default function TestPage() {
   const { targetText, updateTargetText, updateTextArray } = useText()
-  const { hiddenInputValue, missedSpaceIndex, setHiddenInputValue } = useHiddenInput()
+  const { hiddenInputValue, missedSpaceInputValue, setHiddenInputValue } = useHiddenInput()
   const { keystrokes, recordKeystroke, resetKeystrokes } = useKeystrokes()
 
   const { timerStage, startTimer, finalizeTest } = useContext(TestManagerContext)
@@ -28,7 +28,7 @@ export default function TestPage() {
     }
   }, [timerStage])
 
-  const handleSetHiddenInputValue = (currentInput: string) => {
+  const handleSetHiddenInputValue = (newInput: string) => {
     if (keystrokes.length === 1 && timerStage === "stopped") startTimer()
 
     const isEndOfText = hiddenInputValue.length === targetText?.length
@@ -37,7 +37,7 @@ export default function TestPage() {
       return
     }
 
-    setHiddenInputValue(currentInput, targetText)
+    setHiddenInputValue(newInput, targetText)
   }
 
   const handleEndOfText = useCallback(() => {
@@ -45,11 +45,23 @@ export default function TestPage() {
     updateTargetText()
   }, [targetText])
 
+  const currentTargetText = useMemo(() => {
+    if (!missedSpaceInputValue) return targetText
+
+    const missedSpaceIndex = hiddenInputValue.length
+
+    const leadingText = targetText.slice(0, hiddenInputValue.length)
+    const trailingText = targetText.slice(missedSpaceIndex)
+
+    return leadingText + missedSpaceInputValue + trailingText
+  }, [targetText, hiddenInputValue, missedSpaceInputValue])
+
   return (
     <>
       <HiddenInput
         targetText={targetText}
         hiddenInputValue={hiddenInputValue}
+        missedSpaceInputValue={missedSpaceInputValue}
         handleSetHiddenInputValue={handleSetHiddenInputValue}
         recordKeystroke={recordKeystroke}
       />
@@ -66,9 +78,9 @@ export default function TestPage() {
           </section>
           <section className="my-14">
             <TextDisplay
-              targetText={targetText}
+              targetText={currentTargetText}
               hiddenInputValue={hiddenInputValue}
-              missedSpaceIndex={missedSpaceIndex}
+              missedSpaceInputValue={missedSpaceInputValue}
             />
           </section>
         </div>

@@ -1,44 +1,45 @@
-import { useRef } from "react"
+import { useMemo, useRef } from "react"
 
 import Caret from "./Caret"
 
 type TextDisplayProps = {
   targetText: string
   hiddenInputValue: string
-  missedSpaceIndex: number | null
+  missedSpaceInputValue: string
 }
 
-export default function TextDisplay({ targetText, hiddenInputValue, missedSpaceIndex }: TextDisplayProps) {
+export default function TextDisplay({
+  targetText,
+  hiddenInputValue,
+  missedSpaceInputValue
+}: TextDisplayProps) {
   const caretPositionRef = useRef<HTMLSpanElement | null>(null)
 
   let globalCharacterIndex = 0
 
-  const getTextWithSpaceErrors = () => {
-    if (!missedSpaceIndex) return targetText
+  const missedSpaceCharacterIndexes = useMemo(() => {
+    return [...missedSpaceInputValue].map((_, characterIndex) => characterIndex + hiddenInputValue.length)
+  }, [missedSpaceInputValue])
 
-    const incorrectCharactersSinceMissedSpace = hiddenInputValue.slice(
-      missedSpaceIndex - 1,
-      hiddenInputValue.length - 1
-    )
-
-    return Array.from(targetText, (character, characterIndex) => {
-      if (characterIndex === missedSpaceIndex) return `${incorrectCharactersSinceMissedSpace}${character}`
-      return character
-    }).join("")
-  }
-
-  const currentText = missedSpaceIndex ? getTextWithSpaceErrors() : targetText
-
-  const targetTextByWordAndChar = currentText.replace(/\s/g, " ¿").split(/¿/g)
+  const targetTextByWordAndChar = useMemo(() => {
+    return targetText.replace(/\s/g, " ¿").split(/¿/g)
+  }, [targetText])
 
   const getCharacterStyles = (character: string, characterIndex: number) => {
     const notTyped = !hiddenInputValue || characterIndex > hiddenInputValue.length - 1
     const incorrectCharacter = hiddenInputValue[characterIndex] !== character
 
-    if (notTyped) return `text-neutral-800`
+    if (missedSpaceCharacterIndexes.includes(characterIndex)) {
+      return "text-red-700"
+    }
+
+    if (notTyped) return `text-neutral-500`
     if (incorrectCharacter) return `text-red-400`
+
     return `text-neutral-400`
   }
+
+  const combinedInputLength = hiddenInputValue.length + missedSpaceInputValue.length
 
   return (
     <>
@@ -47,8 +48,7 @@ export default function TextDisplay({ targetText, hiddenInputValue, missedSpaceI
         {targetTextByWordAndChar.map((word, wordIndex) => (
           <div key={wordIndex} className={`${wordIndex}`}>
             {word.split("").map((character, characterIndex) => {
-              const hasCaret = globalCharacterIndex === hiddenInputValue.length
-
+              const hasCaret = globalCharacterIndex === combinedInputLength
               globalCharacterIndex++
 
               return (

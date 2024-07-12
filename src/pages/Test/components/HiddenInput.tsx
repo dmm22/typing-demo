@@ -9,13 +9,15 @@ import { Keystroke } from "../../../types"
 type HiddenInputProps = {
   targetText: string
   hiddenInputValue: string
-  handleSetHiddenInputValue: (currentInput: string) => void
+  missedSpaceInputValue: string
+  handleSetHiddenInputValue: (newInput: string) => void
   recordKeystroke: (keystroke: Keystroke) => void
 }
 
 export default function HiddenInput({
   targetText,
   hiddenInputValue,
+  missedSpaceInputValue,
   handleSetHiddenInputValue,
   recordKeystroke
 }: HiddenInputProps) {
@@ -57,7 +59,7 @@ export default function HiddenInput({
     <input
       ref={inputRef}
       className="absolute opacity-0"
-      value={hiddenInputValue}
+      value={missedSpaceInputValue || hiddenInputValue}
       onChange={e => handleSetHiddenInputValue(e.target.value)}
       onKeyDown={handleOnKeyDown}
     />

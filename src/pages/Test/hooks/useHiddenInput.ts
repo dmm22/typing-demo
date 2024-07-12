@@ -1,48 +1,71 @@
-import { useCallback, useState } from "react"
+import { useState, useEffect, useRef } from "react"
 
 const useHiddenInput = () => {
-  const [hiddenInputValue, setHiddenInputValue] = useState("")
-  const [missedSpaceIndex, setMissedSpaceIndex] = useState<number | null>(null)
+  const [mainInputValue, setMainInputValue] = useState("")
+  const [missedSpaceInputValue, setMissedSpaceInputValue] = useState("")
 
-  const updateHiddenInput = useCallback(
-    (currentInput: string, targetText?: string) => {
-      if (!targetText) {
-        setHiddenInputValue(currentInput)
-        return
-      }
+  const previousInputValueRef = useRef("")
 
-      const typedCharacterIndex = currentInput.length - 1
-      const typedCharacter = currentInput[typedCharacterIndex]
-      const expectedCharacter = targetText[typedCharacterIndex]
+  useEffect(() => {
+    previousInputValueRef.current = mainInputValue
+  }, [mainInputValue])
 
-      const expectedSpaceMissed = expectedCharacter === " " && typedCharacter !== " "
-      const expectedSpaceCorrected = missedSpaceIndex && expectedCharacter === " " && typedCharacter === " "
-      const unexpectedSpaceTyped = typedCharacter === " " && expectedCharacter !== " "
+  const inputHandler = (newInput: string, targetText: string = "") => {
+    const typedCharacterIndex = newInput.length - 1
+    const typedCharacter = newInput[typedCharacterIndex]
+    const expectedCharacter = targetText[typedCharacterIndex]
 
-      if (unexpectedSpaceTyped) {
-        handleUnexpectedSpace(currentInput, targetText, typedCharacterIndex)
-        return
-      }
+    const expectedSpaceMissed = expectedCharacter === " " && typedCharacter !== " "
+    const unexpectedSpaceTyped = expectedCharacter !== " " && typedCharacter === " "
+    const lessCharactersThanPreviousInput = newInput.length < previousInputValueRef.current.length
 
-      if (!missedSpaceIndex && expectedSpaceMissed) setMissedSpaceIndex(typedCharacterIndex)
-      if (expectedSpaceCorrected) setMissedSpaceIndex(null)
+    if (expectedSpaceMissed) {
+      setMissedSpaceInputValue(previousValue => `${previousValue}${typedCharacter}`)
+      return
+    }
 
-      setHiddenInputValue(currentInput)
-    },
-    [hiddenInputValue]
-  )
+    if (missedSpaceInputValue) {
+      handleMissedSpaceInputValue(newInput)
+      return
+    }
 
-  const handleUnexpectedSpace = useCallback(
-    (currentInput: string, targetText: string, typedCharacterIndex: number) => {
-      const remainingTextAfterSpace = targetText.slice(typedCharacterIndex)
-      const nextWordSegment = remainingTextAfterSpace.split(" ")[0]
+    if (!lessCharactersThanPreviousInput && unexpectedSpaceTyped) {
+      skipToNextWord(targetText)
+      return
+    }
 
-      setHiddenInputValue(currentInput + " ".repeat(nextWordSegment.length))
-    },
-    [hiddenInputValue]
-  )
+    if (!newInput) setMissedSpaceInputValue("")
 
-  return { hiddenInputValue, missedSpaceIndex, setHiddenInputValue: updateHiddenInput }
+    setMainInputValue(newInput)
+  }
+
+  const handleMissedSpaceInputValue = (newInput: string) => {
+    const typedCharacter = newInput[newInput.length - 1]
+
+    console.log({ newInput, typedCharacter })
+
+    if (typedCharacter === " ") {
+      setMissedSpaceInputValue("")
+      setMainInputValue(previousInput => `${previousInput} `)
+      return
+    }
+
+    setMissedSpaceInputValue(newInput)
+  }
+
+  const skipToNextWord = (targetText: string) => {
+    const remainingText = targetText.slice(mainInputValue.length, targetText.length)
+    const charactersUntilNextSpace = remainingText.indexOf(" ") + 1
+    const inputPadding = Array(charactersUntilNextSpace).fill(" ").join("")
+
+    setMainInputValue(previousInput => `${previousInput}${inputPadding}`)
+  }
+
+  return {
+    hiddenInputValue: mainInputValue,
+    missedSpaceInputValue,
+    setHiddenInputValue: inputHandler
+  }
 }
 
 export default useHiddenInput
