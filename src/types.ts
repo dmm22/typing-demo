@@ -29,3 +29,11 @@ export type TestChartData = {
   accuracy: number[]
   errors: string[]
 }
+
+export type SavedTestSummary = {
+  averageWpm: string
+  averageAccuracy: string
+  totalKeystrokes: number
+  joinDate: Date | string
+  testCount: number
+}

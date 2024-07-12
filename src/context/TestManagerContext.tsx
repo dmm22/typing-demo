@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom"
 import useTimer from "../hooks/useTimer"
 import useTestResults from "../pages/TestResults/hooks/useTestResults"
 
-import { Keystroke, TestChartData, TestResult, TimerStage } from "../types"
+import { Keystroke, SavedTest, SavedTestSummary, TestChartData, TestResult, TimerStage } from "../types"
 import useTestChartStats from "../pages/TestResults/hooks/useTestChartStats"
 import useLocalStorage from "../hooks/useLocalStorage"
 import useSavedTests from "../pages/UserProfile/hooks/useSavedTests"
@@ -19,6 +19,8 @@ type TestManagerContextProps = {
   testResults: TestResult | null
   finalizeTest: (keystrokes: Keystroke[]) => void
   testChartData: TestChartData | null
+  savedTests: SavedTest[]
+  savedTestSummary: SavedTestSummary
 }
 
 export const TestManagerContext = createContext<TestManagerContextProps>({} as TestManagerContextProps)
@@ -55,7 +57,9 @@ export default function TestManagerContextProvider({ children }: { children: Rea
         setTestDuration,
         testResults,
         finalizeTest,
-        testChartData
+        testChartData,
+        savedTests,
+        savedTestSummary
       }}
     >
       {children}

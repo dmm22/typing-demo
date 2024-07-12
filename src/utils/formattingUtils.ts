@@ -14,3 +14,8 @@ export const formatSecondsAsFullWords = (duration: number) => {
 
   return `${minuteString}${minuteString && secondString ? " " : ""}${secondString}`.trim()
 }
+
+export const formatLongDate = (date: Date): string => {
+  const options: Intl.DateTimeFormatOptions = { year: "numeric", month: "long", day: "numeric" }
+  return date.toLocaleDateString("en-US", options)
+}

@@ -1,7 +1,9 @@
+import ActivityOverview from "./components/ActivityOverview"
+
 export default function UserProfilePage() {
   return (
     <main>
-      <p>UserProfilePage</p>
+      <ActivityOverview />
     </main>
   )
 }
