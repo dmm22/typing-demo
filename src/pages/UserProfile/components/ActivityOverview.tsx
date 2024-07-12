@@ -8,7 +8,7 @@ export default function ActivityOverview() {
   const { joinDate, totalKeystrokes, testCount, averageWpm, averageAccuracy } = savedTestSummary
 
   return (
-    <section className="flex flex-col items-start justify-center h-full gap-6">
+    <div className="flex flex-col items-start justify-center gap-6">
       <header className="flex flex-col items-center gap-3">
         <div>
           <FaUser className="p-2 text-6xl text-white rounded-full bg-neutral-600" aria-hidden="true" />
@@ -42,6 +42,6 @@ export default function ActivityOverview() {
           Tests Taken: <span className="font-medium text-sky-600">{testCount}</span>
         </small>
       </footer>
-    </section>
+    </div>
   )
 }
