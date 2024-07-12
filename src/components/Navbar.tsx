@@ -3,7 +3,7 @@ import { FaUser } from "react-icons/fa"
 
 export default function Navbar() {
   return (
-    <nav className="relative z-10 flex items-center justify-between mb-3">
+    <nav className="relative z-10 flex items-center justify-between mb-8">
       <Link className="text-3xl font-bold text-sky-600" to="/" tabIndex={1}>
         Logo
       </Link>

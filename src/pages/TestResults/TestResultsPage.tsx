@@ -3,7 +3,7 @@ import StatPanel from "./components/StatPanel"
 
 export default function TestResultsPage() {
   return (
-    <main>
+    <main className="grid gap-8">
       <StatPanel />
       <ResultChart />
     </main>

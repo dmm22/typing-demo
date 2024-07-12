@@ -47,7 +47,7 @@ export default function NewTestButton() {
   return (
     <>
       {isVisible && (
-        <section className="absolute z-20 flex flex-col items-center gap-1 transform -translate-x-1/2 w-max left-1/2 bottom-1/3">
+        <section className="absolute z-20 flex flex-col items-center gap-1 transform -translate-x-1/2 w-max left-1/2 bottom-[20dvh]">
           {pathname === "/results" && (
             <p className="font-medium text-neutral-500">
               Press Tab on any screen to access and use the New Test button.

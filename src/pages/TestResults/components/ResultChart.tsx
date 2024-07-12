@@ -74,7 +74,7 @@ export default function ResultChart() {
   }
 
   return (
-    <div className="flex flex-col h-full">
+    <div className="h-[46dvh]">
       <Chart data={data} options={options} />
     </div>
   )
