@@ -1,4 +1,4 @@
-import { useCallback, useState } from "react"
+import { useCallback } from "react"
 
 import CarouselSelect from "../../../components/CarouselSelect"
 
@@ -8,6 +8,7 @@ import sentences from "../../../data/sentences.json"
 import words from "../../../data/words.json"
 
 import { CarouselOption } from "../../../types"
+import useLocalStorage from "../../../hooks/useLocalStorage"
 
 type TextTypePickerProps = {
   updateTextArray: (newArray: string[]) => void
@@ -16,7 +17,7 @@ type TextTypePickerProps = {
 const textTypes = ["sentences", "words"]
 
 export default function TextTypePicker({ updateTextArray }: TextTypePickerProps) {
-  const [textTypeIndex, setTextTypeIndex] = useState(0)
+  const [textTypeIndex, setTextTypeIndex] = useLocalStorage("textTypeIndex", 0)
 
   const textTypeOptions = [
     { value: 0, label: "Sentences" },
