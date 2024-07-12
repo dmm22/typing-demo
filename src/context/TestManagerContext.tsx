@@ -7,6 +7,7 @@ import useTestResults from "../pages/TestResults/hooks/useTestResults"
 import { Keystroke, TestChartData, TestResult, TimerStage } from "../types"
 import useTestChartStats from "../pages/TestResults/hooks/useTestChartStats"
 import useLocalStorage from "../hooks/useLocalStorage"
+import useSavedTests from "../pages/UserProfile/hooks/useSavedTests"
 
 type TestManagerContextProps = {
   timer: number
@@ -29,10 +30,12 @@ export default function TestManagerContextProvider({ children }: { children: Rea
   const { timer, timerStage, startTimer, stopTimer, resetTimer } = useTimer({ duration: testDuration })
   const { testResults, processTestResults } = useTestResults()
   const { testChartData, getTestChartData } = useTestChartStats()
+  const { savedTests, saveTest, savedTestSummary } = useSavedTests()
 
   const finalizeTest = useCallback(
     (keystrokes: Keystroke[]) => {
-      processTestResults(keystrokes, testDuration)
+      const newTest = processTestResults(keystrokes, testDuration)
+      saveTest(newTest)
 
       getTestChartData({ keystrokes, testDuration })
       resetTimer()

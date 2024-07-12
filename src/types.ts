@@ -20,6 +20,10 @@ export type TestResult = {
   accuracy: number
 }
 
+export type SavedTest = TestResult & {
+  date: Date
+}
+
 export type TestChartData = {
   wpm: number[]
   accuracy: number[]

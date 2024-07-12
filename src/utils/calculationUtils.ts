@@ -7,3 +7,8 @@ export const calculateWpm = (secondsElapsed: number, totalCorrectKeystrokes: num
 export const calculateAccuracy = (totalCorrectKeystrokes: number, totalKeystrokes: number) => {
   return totalKeystrokes === 0 ? 0 : +((totalCorrectKeystrokes / totalKeystrokes) * 100).toFixed(1)
 }
+
+export const calculateAverage = (numbers: number[]) => {
+  if (numbers.length) return numbers.reduce((average, number) => average + number, 0) / numbers.length
+  return 0
+}
