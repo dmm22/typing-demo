@@ -1,3 +1,5 @@
+import { PropertyCollector } from "../types"
+
 export const shuffleArray = <T>(array: T[]) => {
   return array
     .map(value => ({ value, sort: Math.random() }))

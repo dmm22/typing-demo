@@ -25,12 +25,12 @@ export default function ProgressChart() {
     datasets: [
       {
         label: "WPM",
-        data: [0, ...wpm],
+        data: wpm ? [0, ...wpm] : [],
         borderColor: defaultChartColors.wpm
       },
       {
         label: "Accuracy",
-        data: [100, ...accuracy],
+        data: accuracy ? [100, ...accuracy] : [],
         borderColor: defaultChartColors.accuracy
       }
     ]

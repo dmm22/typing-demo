@@ -43,3 +43,7 @@ export type LegendItem = {
   color?: string
   label: string
 }
+
+export type PropertyCollector<T> = {
+  [K in keyof T]: T[K][]
+}
