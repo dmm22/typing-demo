@@ -9,6 +9,8 @@ import { getChartLabels, getHighestYValue } from "../../../utils/chartUtils"
 import { formatSecondsAsMMSS } from "../../../utils/formattingUtils"
 
 import { defaultChartColors } from "../../../config/chartConfig"
+import { LegendItem } from "../../../types"
+import CustomChartLegend from "../../../components/CustomChartLegend"
 
 export default function ResultChart() {
   const { testChartData } = useContext(TestManagerContext)
@@ -73,8 +75,20 @@ export default function ResultChart() {
     }
   }
 
+  const legendItems: LegendItem[] = [
+    { label: "WPM", color: defaultChartColors["wpm"] },
+    { label: "Accuracy", color: defaultChartColors["accuracy"] },
+    {
+      label: "Error",
+      icon: <span className="text-xl font-black leading-tight text-red-500">✕</span>
+    }
+  ]
+
   return (
     <div className="h-[46dvh]">
+      <div className="mr-2">
+        <CustomChartLegend legendItems={legendItems} />
+      </div>
       <Chart data={data} options={options} />
     </div>
   )

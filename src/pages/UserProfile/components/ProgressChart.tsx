@@ -9,6 +9,8 @@ import { extractProperties } from "../../../utils/arrayUtils"
 import { getChartLabels, getHighestYValue } from "../../../utils/chartUtils"
 
 import { defaultChartColors } from "../../../config/chartConfig"
+import { LegendItem } from "../../../types"
+import CustomChartLegend from "../../../components/CustomChartLegend"
 
 export default function ProgressChart() {
   const { savedTests } = useContext(TestManagerContext)
@@ -54,10 +56,21 @@ export default function ProgressChart() {
     }
   }
 
+  const legendItems: LegendItem[] = [
+    { label: "WPM", color: defaultChartColors["wpm"] },
+    { label: "Accuracy", color: defaultChartColors["accuracy"] }
+  ]
+
   return (
-    <div className="h-full">
-      <h2 className="text-lg font-medium text-center">Performance by Number of Tests Taken</h2>
-      <Chart data={data} options={options} />
+    <div>
+      <div className="grid grid-cols-3 mb-2">
+        <div />
+        <h2 className="text-lg font-medium text-center">Performance by Number of Tests Taken</h2>
+        <CustomChartLegend legendItems={legendItems} />
+      </div>
+      <div className="h-[30dvh]">
+        <Chart data={data} options={options} />
+      </div>
     </div>
   )
 }

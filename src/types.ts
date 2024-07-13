@@ -37,3 +37,9 @@ export type SavedTestSummary = {
   joinDate: Date | string
   testCount: number
 }
+
+export type LegendItem = {
+  icon?: React.ReactNode
+  color?: string
+  label: string
+}
