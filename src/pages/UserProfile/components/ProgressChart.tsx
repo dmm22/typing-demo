@@ -26,12 +26,14 @@ export default function ProgressChart() {
       {
         label: "WPM",
         data: wpm ? [0, ...wpm] : [],
-        borderColor: defaultChartColors.wpm
+        borderColor: defaultChartColors.wpm,
+        pointBorderColor: "rgba(0, 0, 0, 0)"
       },
       {
         label: "Accuracy",
         data: accuracy ? [100, ...accuracy] : [],
-        borderColor: defaultChartColors.accuracy
+        borderColor: defaultChartColors.accuracy,
+        pointBorderColor: "rgba(0, 0, 0, 0)"
       }
     ]
   }
@@ -48,6 +50,33 @@ export default function ProgressChart() {
     plugins: {
       legend: {
         display: false
+      },
+      tooltip: {
+        callbacks: {
+          title: context => {
+            context.forEach(el => (el.label = `${el.label || 0} Tests Taken`))
+          },
+          label: context => {
+            if (context.dataset.label === "Accuracy") {
+              context.formattedValue = `${context.formattedValue}%`
+            }
+          },
+          labelColor: context => {
+            if (context.dataset.label === "Accuracy") {
+              return {
+                borderColor: defaultChartColors.accuracy,
+                backgroundColor: defaultChartColors.accuracy
+              }
+            }
+
+            if (context.dataset.label === "WPM") {
+              return {
+                borderColor: defaultChartColors.wpm,
+                backgroundColor: defaultChartColors.wpm
+              }
+            }
+          }
+        }
       }
     },
     scales: {

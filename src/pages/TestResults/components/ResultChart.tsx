@@ -27,8 +27,6 @@ export default function ResultChart() {
     return hasErrorKeys ? accuracyYPosition : null
   })
 
-  const transparent = "rgba(0, 0, 0, 0)"
-
   const data = {
     labels,
     datasets: [
@@ -36,19 +34,17 @@ export default function ResultChart() {
         label: "WPM",
         data: wpm,
         borderColor: defaultChartColors.wpm,
-        pointBackgroundColor: transparent,
-        pointBorderColor: transparent
+        pointBorderColor: "rgba(0, 0, 0, 0)"
       },
       {
         label: "Accuracy",
         data: accuracy,
         borderColor: defaultChartColors.accuracy,
-        pointBackgroundColor: transparent,
-        pointBorderColor: transparent
+        pointBorderColor: "rgba(0, 0, 0, 0)"
       },
       {
         type: "scatter",
-        label: "Error",
+        label: "Errors",
         backgroundColor: defaultChartColors.error,
         data: errorDataCoordinates
       }
@@ -67,6 +63,38 @@ export default function ResultChart() {
     plugins: {
       legend: {
         display: false
+      },
+      tooltip: {
+        callbacks: {
+          title: context => {
+            context.forEach(el => (el.label = `Time Elapsed: ${el.label}`))
+          },
+          label: context => {
+            if (context.dataset.label === "Accuracy") {
+              context.formattedValue = `${context.formattedValue}%`
+            }
+            if (context.dataset.label === "Errors") {
+              console.log(context)
+              console.log(errors)
+              context.formattedValue = errors[context.dataIndex]
+            }
+          },
+          labelColor: context => {
+            if (context.dataset.label === "Accuracy") {
+              return {
+                borderColor: defaultChartColors.accuracy,
+                backgroundColor: defaultChartColors.accuracy
+              }
+            }
+
+            if (context.dataset.label === "WPM") {
+              return {
+                borderColor: defaultChartColors.wpm,
+                backgroundColor: defaultChartColors.wpm
+              }
+            }
+          }
+        }
       }
     },
     scales: {
@@ -79,7 +107,7 @@ export default function ResultChart() {
     { label: "WPM", color: defaultChartColors["wpm"] },
     { label: "Accuracy", color: defaultChartColors["accuracy"] },
     {
-      label: "Error",
+      label: "Errors",
       icon: <span className="text-xl font-black leading-tight text-red-500">✕</span>
     }
   ]
