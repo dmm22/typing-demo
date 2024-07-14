@@ -11,6 +11,7 @@ import { TestManagerContext } from "../../context/TestManagerContext"
 import useHiddenInput from "./hooks/useHiddenInput"
 import useText from "./hooks/useText"
 import useKeystrokes from "./hooks/useKeystrokes"
+import InteractiveKeyboardMockup from "./components/InteractiveKeyboardMockup"
 
 export default function TestPage() {
   const { targetText, updateTargetText, updateTextArray } = useText()
@@ -67,21 +68,24 @@ export default function TestPage() {
       />
       <main className="absolute inset-0 flex items-center justify-center">
         <div className="grid items-center grid-rows-3">
-          <section className="flex justify-center">
+          <section className="flex items-end justify-center h-full">
             {timerStage === "running" && <TestTimer />}
             {timerStage === "stopped" && (
-              <menu className="flex gap-14 ">
+              <menu className="flex gap-14">
                 <TestDurationPicker />
                 <TextTypePicker updateTextArray={updateTextArray} />
               </menu>
             )}
           </section>
-          <section className="my-14">
+          <section className="flex items-center">
             <TextDisplay
               targetText={currentTargetText}
               hiddenInputValue={hiddenInputValue}
               missedSpaceInputValue={missedSpaceInputValue}
             />
+          </section>
+          <section className="flex justify-center">
+            <InteractiveKeyboardMockup />
           </section>
         </div>
       </main>

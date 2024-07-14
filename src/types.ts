@@ -47,3 +47,5 @@ export type LegendItem = {
 export type PropertyCollector<T> = {
   [K in keyof T]: T[K][]
 }
+
+export type KeyboardKey = { mainKey: string; shiftKey?: string }
