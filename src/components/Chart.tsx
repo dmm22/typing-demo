@@ -11,7 +11,8 @@ import {
   LineElement,
   PointElement,
   Title,
-  Tooltip
+  Tooltip,
+  ScatterController
 } from "chart.js"
 import { Chart as ReactChart } from "react-chartjs-2"
 
@@ -25,7 +26,8 @@ ChartJS.register(
   Legend,
   Tooltip,
   LineController,
-  Title
+  Title,
+  ScatterController
 )
 
 type ChartProps = {
